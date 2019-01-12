@@ -13,8 +13,38 @@ export function RenderArtist() {
 
 
         var $main = $("#main-wrapper").append(this.renderAlbum());
-        $("<div>").addClass("main-div").appendTo($main).append(this.renderTop()).append(this.renderBottom()).append(this.renderBio()).parent();
+        $("<div>").addClass("main-div")
+        .append($("<input>").attr("type", "text").keypress(async (event) => {
+            
+            if(this.delayedInput != null){
+                clearTimeout(this.delayedInput);
+            }
+
+            this.delayedInput = setTimeout(async () => {
+                this.findArtist = await this.artistPageData.getSearchedArtist(String.fromCharCode(event.which));
+                console.log("Render", this.findArtist.artist[1]);
+
+                var $searchResult = $("<div>").appendTo($main).addClass("search-result");
+
+                for(var i = 0; i < this.findArtist.artist.length; i++){
+    
+                    $("<div>").appendTo($searchResult).addClass("search-result1")
+                    .append($("<img>").attr("src", this.findArtist.artist[i].image[1]["#text"]))
+                    .append($("<h5>").text(this.findArtist.artist[i].name));
+                }
+            }, 500);
+
+            
+
+            
+
+            
+            
+        }).addClass("input-search"))
+        .append($("<input>").attr("type", "submit").addClass("input-submit"))
+        .appendTo($main).append(this.renderTop()).append(this.renderBottom()).append(this.renderBio()).parent();
         $("#loader").css("display", "none");
+
 
     }
 
@@ -38,8 +68,9 @@ export function RenderArtist() {
                 event.preventDefault();
                 $("#main-wrapper").html("");
 
+                
+                this.renderAll(event.target.text);
                 $("#loader").css("display", "flex");
-                this.renderAll(event.target.text)
 
             });
         }
@@ -93,7 +124,7 @@ export function RenderArtist() {
 
             for (var j = 0; j < this.artistData.albums[i].tracks.track.length; j++) {
 
-                $("<div>").addClass("render-tracks").appendTo($albumLine).html(this.artistData.albums[i].tracks.track[j].name).css("display", "none");
+                $("<div>").addClass("render-tracks").appendTo($albumLine).html(j+1 + ": " +this.artistData.albums[i].tracks.track[j].name).css("display", "none");
             }
         }
         return $albums;

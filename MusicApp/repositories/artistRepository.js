@@ -22,11 +22,13 @@ export function ArtistRepository() {
     this.getTopAlbums = async function(artistName){
         var result = null;
 
+
         var url = await fetch("http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=" + artistName + "&api_key=cb12f4c4cc252eb5328201724e008ca4&format=json&limit=5");
 
         try {
             var response = await url;
             result = await response.json();
+
 
             return result.topalbums.album.map(function(album){
                 return album.name;

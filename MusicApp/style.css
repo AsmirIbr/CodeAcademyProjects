@@ -118,3 +118,26 @@
 .render-tracks{
     color: rgba(233, 173, 8, 0.945);
 }
+
+.input-search{
+    width: 60%;
+    height: 25px;
+    margin-left: 10px;
+}
+
+.input-submit{
+    
+}
+
+.search-result{
+    position: absolute;
+    width: 482px;
+    right: 313px;
+    top: 39px;
+    height: 200px;
+    background-color: green;
+}
+
+.search-result1{
+    display: flex;
+}
